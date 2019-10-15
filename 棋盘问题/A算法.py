@@ -135,27 +135,24 @@ def ruzhan(checkerboard, stack, number):
         stack.append(checkerboard)
         total_stack.append(checkerboard)
         min_element_number = number
-        print(checkerboard)
     else:
         if number > min_element_number:
-            print(checkerboard)
             print("未插入")
-            pass
         elif number == min_element_number:
             stack.append(checkerboard)
             total_stack.append(checkerboard)
             min_element_number = number
-            print(checkerboard)
         elif number < min_element_number:
             stack = []
             stack.append(checkerboard)
             total_stack.append(checkerboard)
             min_element_number = number
-            print(checkerboard)
+
 
     print("number=",number)
+    print(checkerboard)
+    print("stack", stack)
     print("====================")
-    return stack
 
 # 用来统计当前棋盘有多少个元素不在目标位置
 def statistics(checkboard):
@@ -175,17 +172,13 @@ def statistics(checkboard):
 def iterator_all_elements(final_stack):
     temp_stack = []
 
-    global temp
     for i in final_stack:
         checkerboard_list = move_checkerboard(i)
-        total_stack.append(checkerboard_list)
-        if temp >= 2:
+        print("checkerboard_list=",checkerboard_list)
+        # for j in checkerboard_list:
+        #     temp_stack.append(j)
 
-            pass
-        for j in checkerboard_list:
-            temp_stack.append(j)
-
-    return temp_stack
+    return checkerboard_list
 
 def main():
     initial_checkerboard = np.zeros((3, 3), dtype=int) #记录初始的棋盘状态
