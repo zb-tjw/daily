@@ -5,6 +5,9 @@ import copy
 1. 空洞用数字0表示，其他各个位置用1...8表示
 2. 同一层deep都一样，所以直接不考虑
 3. 注意深浅拷贝问题
+4. 注意闭包问题
+5. 注意stack不是栈，是队列queue，temp是step代表步数，懒得改了
+6.是用那个规则：输入初始和最终棋盘元素，横着从左到右挨着输入，空洞为0，其他为1...8
 """
 
 final_checkerboard = np.zeros((3, 3), dtype=int)  # 记录最终的棋盘状态
@@ -12,7 +15,6 @@ min_element_number = 0
 total_stack = []
 final_stack = []
 mid_stack = []
-before_before_checkerboard = []
 temp = 0
 
 def create_checkerboard(checkerboard):
@@ -74,25 +76,27 @@ def move_checkerboard(before_state):
 
     return mid_stack
 
-def equal_all_position(first_checkerboard, second_checkerboard):
-    num = 0
-    for i in range(3):
-        for j in range(3):
-            if first_checkerboard[i][j] == second_checkerboard[i][j]:
-                num += 1
+def equal_all_position(first_checkerboard):
+    for t in total_stack:
+        num = 0
+        for i in range(3):
+            for j in range(3):
+                if first_checkerboard[i][j] == t[i][j]:
+                    num += 1
+        if num == 9:
+            return 0
+        else:
+            pass
 
-    if num == 9:
         return 1
-    else:
-        return 0
 
 
 def shangyi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
     after_state[first_position][second_position] = after_state[first_position + 1][second_position]  # 数字上移
     after_state[first_position + 1][second_position] = 0
-    tap = equal_all_position(after_state, checkerboard)
-    if tap == 0:
+    tap = equal_all_position(after_state)
+    if tap:
         number = statistics(after_state)
         ruzhan(after_state, stack, number)
 
@@ -100,8 +104,8 @@ def xiayi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
     after_state[first_position][second_position] = after_state[first_position -1][second_position]  # 数字下移
     after_state[first_position - 1][second_position] = 0
-    tap = equal_all_position(after_state, checkerboard)
-    if tap == 0:
+    tap = equal_all_position(after_state)
+    if tap:
         number = statistics(after_state)
         ruzhan(after_state, stack, number)
 
@@ -109,8 +113,8 @@ def zuoyi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
     after_state[first_position][second_position] = after_state[first_position][second_position + 1]  # 数字左移
     after_state[first_position][second_position + 1] = 0
-    tap = equal_all_position(after_state, checkerboard)
-    if tap == 0:
+    tap = equal_all_position(after_state)
+    if tap:
         number = statistics(after_state)
         ruzhan(after_state, stack, number)
 
@@ -118,17 +122,18 @@ def youyi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
     after_state[first_position][second_position] = after_state[first_position][second_position - 1]  # 数字右移
     after_state[first_position][second_position - 1] = 0
-    tap = equal_all_position(after_state, checkerboard)
-    if tap == 0:
+    tap = equal_all_position(after_state)
+    if tap:
         number = statistics(after_state)
         ruzhan(after_state, stack, number)
 
 def ruzhan(checkerboard, stack, number):
     global min_element_number
-    print(len(stack))
-    print(min_element_number)
+    print("len(stack)=",len(stack))
+    print("min_element_number=",min_element_number)
     if len(stack) == 0:
         stack.append(checkerboard)
+        total_stack.append(checkerboard)
         min_element_number = number
         print(checkerboard)
     else:
@@ -138,15 +143,17 @@ def ruzhan(checkerboard, stack, number):
             pass
         elif number == min_element_number:
             stack.append(checkerboard)
+            total_stack.append(checkerboard)
             min_element_number = number
             print(checkerboard)
         elif number < min_element_number:
             stack = []
             stack.append(checkerboard)
+            total_stack.append(checkerboard)
             min_element_number = number
             print(checkerboard)
 
-    print(number)
+    print("number=",number)
     print("====================")
     return stack
 
@@ -182,7 +189,6 @@ def iterator_all_elements(final_stack):
 
 def main():
     initial_checkerboard = np.zeros((3, 3), dtype=int) #记录初始的棋盘状态
-    mid_checkerboard = np.zeros((3, 3), dtype=int) #记录每次移动后的棋盘状态
 
     print("空棋盘如下：")
     print(initial_checkerboard)
@@ -211,8 +217,9 @@ def main():
     global final_stack
     global min_element_number
     global mid_stack
-    final_stack.append(initial_checkerboard)
-    total_stack.append(final_stack)
+    mid_checkerboard = copy.deepcopy(initial_checkerboard)
+    final_stack.append(mid_checkerboard)
+    total_stack.append(mid_checkerboard)
     global temp
     while(len(final_stack) != 0 and temp < 2):
         temp += 1
@@ -222,7 +229,7 @@ def main():
         mid_stack = []
         print(final_stack)
         print("///////////////////////")
-        print("mid_stack=",mid_stack)
+
     # final_stack = iterator_all_elements(final_stack)
     # print(final_stack)
 
