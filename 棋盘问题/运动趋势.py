@@ -1,20 +1,20 @@
 import numpy as np
 
-def find_element_around_zero(qipan, position):
-    around_element = {} # 用游戏中的ASDW这四个符号代表左下右上
-
-    if (position[0] == 0 and position[1] == 0):
-        around_element['A'] = 0
-        around_element['W'] = 0
-        around_element['D'] = qipan[0][1]
-        around_element['S'] = qipan[1][0]
-    elif (position[0] == 0 and position[1] != 0):
-        around_element['A'] = 0
-        around_element['W'] = 0
-        around_element['D'] = qipan[0][1]
-        around_element['S'] = qipan[1][0]
-
-    return around_element
+# def find_element_around_zero(qipan, position):
+#     around_element = {} # 用游戏中的ASDW这四个符号代表左下右上
+#
+#     if (position[0] == 0 and position[1] == 0):
+#         around_element['A'] = 0
+#         around_element['W'] = 0
+#         around_element['D'] = qipan[0][1]
+#         around_element['S'] = qipan[1][0]
+#     elif (position[0] == 0 and position[1] != 0):
+#         around_element['A'] = 0
+#         around_element['W'] = 0
+#         around_element['D'] = qipan[0][1]
+#         around_element['S'] = qipan[1][0]
+#
+#     return around_element
 
 def create_checkerboard(checkerboard):
     order = 0
@@ -83,5 +83,3 @@ for i in range(3):
 # 以上是前期准备工作
 # 根据棋盘的起始和终止状态求出每个元素的初始运动趋势
 #######################################################
-
-around_element = find_element_around_zero(checkerboard, empty_position)
