@@ -24,7 +24,6 @@ def create_checkerboard(checkerboard):
             checkerboard[i][j] = element
 
 def move_checkerboard(before_state):
-    # result = [] # 用来存储符合条件，有进一步扩展的棋盘
     global mid_stack
 
     # 首先确定空洞的位置
@@ -95,8 +94,8 @@ def shangyi(checkerboard, first_position, second_position, stack):
     after_state[first_position + 1][second_position] = 0
     tap = equal_all_position(after_state)
     if tap:
-        number = statistics(after_state)
-        ruzhan(after_state, stack, number)
+        statistics(after_state)  # 这里保留是为了判断是否达到最终状态
+        ruzhan(after_state, stack)
 
 def xiayi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
@@ -104,8 +103,8 @@ def xiayi(checkerboard, first_position, second_position, stack):
     after_state[first_position - 1][second_position] = 0
     tap = equal_all_position(after_state)
     if tap:
-        number = statistics(after_state)
-        ruzhan(after_state, stack, number)
+        statistics(after_state)
+        ruzhan(after_state, stack)
 
 def zuoyi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
@@ -113,8 +112,8 @@ def zuoyi(checkerboard, first_position, second_position, stack):
     after_state[first_position][second_position + 1] = 0
     tap = equal_all_position(after_state)
     if tap:
-        number = statistics(after_state)
-        ruzhan(after_state, stack, number)
+        statistics(after_state)
+        ruzhan(after_state, stack)
 
 def youyi(checkerboard, first_position, second_position, stack):
     after_state = copy.deepcopy(checkerboard)
@@ -122,15 +121,14 @@ def youyi(checkerboard, first_position, second_position, stack):
     after_state[first_position][second_position - 1] = 0
     tap = equal_all_position(after_state)
     if tap:
-        number = statistics(after_state)
-        ruzhan(after_state, stack, number)
+        statistics(after_state)
+        ruzhan(after_state, stack)
 
-def ruzhan(checkerboard, stack, number):
+def ruzhan(checkerboard, stack):
     stack.append(checkerboard)
     total_stack.append(checkerboard)
 
     print(checkerboard)
-    # print("stack", stack)
     print("====================")
 
 # 用来统计当前棋盘有多少个元素不在目标位置
@@ -149,14 +147,8 @@ def statistics(checkboard):
     return 9 - number
 
 def iterator_all_elements(final_stack):
-    temp_stack = []
-
     for i in final_stack:
         checkerboard_list = move_checkerboard(i)
-        # print("checkerboard_list=",checkerboard_list)
-        # for j in checkerboard_list:
-        #     temp_stack.append(j)
-
     return checkerboard_list
 
 def main():
@@ -178,12 +170,6 @@ def main():
     print(final_checkerboard)
     print("-------------------")
 
-    # number = statistics(initial_checkerboard)
-    # if number == 0:
-    #     print("初始状态即为最终状态，无需移动棋盘，棋盘信息如下：")
-    #     print(initial_checkerboard)
-    #     exit()
-
     statistics(initial_checkerboard)
 
     global final_stack
@@ -197,12 +183,7 @@ def main():
         min_element_number = 0
         final_stack = copy.deepcopy(mid_stack)
         mid_stack = []
-        # print(final_stack)
         print("///////////////////////")
-
-    # final_stack = iterator_all_elements(final_stack)
-    # print(final_stack)
-
 
 if __name__ == '__main__':
     main()
