@@ -11,11 +11,9 @@ import copy
 """
 
 final_checkerboard = np.zeros((3, 3), dtype=int)  # 记录最终的棋盘状态
-min_element_number = 0
 total_stack = []
 final_stack = []
 mid_stack = []
-temp = 0
 
 def create_checkerboard(checkerboard):
     order = 0
@@ -128,30 +126,11 @@ def youyi(checkerboard, first_position, second_position, stack):
         ruzhan(after_state, stack, number)
 
 def ruzhan(checkerboard, stack, number):
-    global min_element_number
-    print("len(stack)=",len(stack))
-    print("min_element_number=",min_element_number)
-    if len(stack) == 0:
-        stack.append(checkerboard)
-        total_stack.append(checkerboard)
-        min_element_number = number
-    else:
-        if number > min_element_number:
-            print("未插入")
-        elif number == min_element_number:
-            stack.append(checkerboard)
-            total_stack.append(checkerboard)
-            min_element_number = number
-        elif number < min_element_number:
-            stack = []
-            stack.append(checkerboard)
-            total_stack.append(checkerboard)
-            min_element_number = number
+    stack.append(checkerboard)
+    total_stack.append(checkerboard)
 
-
-    print("number=",number)
     print(checkerboard)
-    print("stack", stack)
+    # print("stack", stack)
     print("====================")
 
 # 用来统计当前棋盘有多少个元素不在目标位置
@@ -174,7 +153,7 @@ def iterator_all_elements(final_stack):
 
     for i in final_stack:
         checkerboard_list = move_checkerboard(i)
-        print("checkerboard_list=",checkerboard_list)
+        # print("checkerboard_list=",checkerboard_list)
         # for j in checkerboard_list:
         #     temp_stack.append(j)
 
@@ -213,14 +192,12 @@ def main():
     mid_checkerboard = copy.deepcopy(initial_checkerboard)
     final_stack.append(mid_checkerboard)
     total_stack.append(mid_checkerboard)
-    global temp
-    while(len(final_stack) != 0 and temp < 2):
-        temp += 1
+    while(len(final_stack) != 0):
         mid_stack = iterator_all_elements(final_stack)
         min_element_number = 0
         final_stack = copy.deepcopy(mid_stack)
         mid_stack = []
-        print(final_stack)
+        # print(final_stack)
         print("///////////////////////")
 
     # final_stack = iterator_all_elements(final_stack)
